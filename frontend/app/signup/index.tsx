@@ -4,14 +4,20 @@ import { DefaultText } from "@/components/default-text";
 import { DefaultTitle } from "@/components/default-title";
 import { LinkComponent } from "@/components/link-component";
 import { ScreenContainer } from "@/components/screen-container";
+import { NewUser } from "@/models/user.model";
+import { createUser } from "@/services/user-service.service";
 import { useForm } from "react-hook-form";
 import { Alert, View } from "react-native";
 
 export default function SignUp() {
-  const { control, handleSubmit, formState: { errors } } = useForm()
+  const { control, handleSubmit, watch, getValues, formState: { errors } } = useForm<NewUser>()
 
-  const handleSubmitSignUp = (data: any) => {
-    Alert.alert('Dados de cadastro: ', JSON.stringify(data))
+  const confirmPassword = watch('password')
+
+  const handleSubmitSignUp = async (data: NewUser) => {
+    const resp = await createUser(data)
+
+    console.log('resp: ', resp)
   }
 
   return (
@@ -53,9 +59,9 @@ export default function SignUp() {
             keyboardType='default' 
 
             control={ control } 
-            inputName='username' 
+            inputName='name' 
             validateOpt={{ required: '* Nome obrigatório' }} 
-            error={ errors.username }
+            error={ errors.name }
           />
 
           <DefaultInput 
@@ -87,7 +93,7 @@ export default function SignUp() {
             control={ control } 
             inputName='confirmPassword' 
             validateOpt={{ required: '* Senha obrigatória' }} 
-            error={ errors.confirmPassword } 
+            error={ getValues('password') != confirmPassword && '* As senhas devem ser iguais' } 
 
             isPasswordInput
           />
