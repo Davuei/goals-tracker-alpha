@@ -5,18 +5,26 @@ import { DefaultText } from "@/components/default-text";
 import { DefaultTitle } from "@/components/default-title";
 import { LinkComponent } from "@/components/link-component";
 import { ScreenContainer } from "@/components/screen-container";
+import { LoginData } from "@/models/user.model";
+import { loginUser } from "@/services/user-service.service";
 import { useRouter } from "expo-router";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { Alert, View } from "react-native";
 
 export default function Index() {
 
   const router = useRouter()
 
-  const { control, handleSubmit, formState: { errors } } = useForm()
+  const { control, handleSubmit, formState: { errors } } = useForm<LoginData>()
 
-  const handleSubmitLogin = (data: any) => {
-    Alert.alert('Dados recebidos: ', JSON.stringify(data))
+  const handleSubmitLogin: SubmitHandler<LoginData> = async (data) => {
+    const resp = await loginUser(data)
+
+    if(resp.status == 200 || resp.status == 201)
+      router.replace('/home')
+
+    console.log(resp.message)
+    console.log('GOALS: ', resp.goals)
   }
 
   return (
@@ -51,7 +59,7 @@ export default function Index() {
               width: '100%', 
               justifyContent: 'space-between', 
               alignItems: 'center', 
-              gap: 16
+              gap: 20
             }}
           >
             <DefaultInput 
@@ -71,25 +79,31 @@ export default function Index() {
 
               control={ control } 
               inputName='password' 
-              validateOpt={{ required: '* Senha obrigatória', minLength: {value: 4, message: '* Mínimo de 4 caracteres'} }} 
+              validateOpt={{ 
+                required: '* Senha obrigatória', 
+                minLength: {value: 3, message: '* Mínimo de 3 caracteres'} 
+              }} 
               error={ errors.password }
             />
 
             <DefaultPressable 
-              style='filled'
+              style='filled' 
+              format='long' 
               onPress={ handleSubmit(handleSubmitLogin) }
             >
               Entrar
             </DefaultPressable>
 
-            <DefaultPressable
+            <DefaultPressable 
+              style='hollow' 
+              format='long' 
               onPress={ () => { router.push('./signup') } }
             >
               Cadastrar-se
             </DefaultPressable>
           </View>
 
-          <LinkComponent href={'./home'}>
+          <LinkComponent href={'/home'}>
             Entrar sem conta
           </LinkComponent>
         </View>

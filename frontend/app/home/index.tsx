@@ -46,7 +46,9 @@ export default function Home() {
             flexDirection: 'row-reverse'
           }}
         >
-          <IconButton
+          <IconButton 
+            style='filled' 
+            format='square' 
             onPress={ handleAddNewGoal }
           >
             <Ionicons name='add' size={24} color={'transparent'} />

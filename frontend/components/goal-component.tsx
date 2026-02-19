@@ -1,25 +1,52 @@
 import { colors } from "@/constants/colors";
-import { StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 import { DefaultText } from "./default-text";
+import { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
 
 interface GoalComponentProps {
   goalTitle: string
 }
 
 export function GoalComponent({ goalTitle }: GoalComponentProps) {
-  return (
-    <View
-      style={ styles.viewContainer }
-    >
-      <View
-        style={ styles.viewIcon }
-      >
+  const scale = useSharedValue(1)
 
-      </View>
-      <DefaultText>
-        { goalTitle }
-      </DefaultText>
-    </View>
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ scale: scale.value }],
+    }
+  })
+
+  const handlePressIn = () => {
+    scale.value = withTiming(0.95, { duration: 150 })
+  }
+
+  const handlePressOut = () => {
+    scale.value = withTiming(1, { duration: 150 })
+  }
+
+  return (
+    <Pressable
+      style={[ 
+        styles.viewContainer, 
+        /* animatedStyle  */
+      ]}
+
+      /* onPressIn={ handlePressIn } 
+      onPressOut={ handlePressOut } */
+    >
+      {/* <View
+        style={ styles.viewContainer }
+      > */}
+        <View
+          style={ styles.viewIcon }
+        >
+
+        </View>
+        <DefaultText>
+          { goalTitle }
+        </DefaultText>
+      {/* </View> */}
+    </Pressable>
   )
 }
 

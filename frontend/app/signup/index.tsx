@@ -6,18 +6,24 @@ import { LinkComponent } from "@/components/link-component";
 import { ScreenContainer } from "@/components/screen-container";
 import { NewUser } from "@/models/user.model";
 import { createUser } from "@/services/user-service.service";
-import { useForm } from "react-hook-form";
-import { Alert, View } from "react-native";
+import { useRouter } from "expo-router";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { View } from "react-native";
 
 export default function SignUp() {
-  const { control, handleSubmit, watch, getValues, formState: { errors } } = useForm<NewUser>()
+  const { control, handleSubmit, watch, formState: { errors } } = useForm<NewUser>()
 
   const confirmPassword = watch('password')
 
-  const handleSubmitSignUp = async (data: NewUser) => {
+  const router = useRouter()
+
+  const handleSubmitSignUp: SubmitHandler<NewUser> = async (data) => {
     const resp = await createUser(data)
 
-    console.log('resp: ', resp)
+    if(resp.status == 200 || resp.status == 201)
+      router.replace('../')
+
+    console.log(resp.message)
   }
 
   return (
@@ -51,7 +57,7 @@ export default function SignUp() {
             width: '100%', 
             justifyContent: 'space-between', 
             alignItems: 'center', 
-            gap: 16
+            gap: 20
           }}
         >
           <DefaultInput 
@@ -92,14 +98,18 @@ export default function SignUp() {
 
             control={ control } 
             inputName='confirmPassword' 
-            validateOpt={{ required: '* Senha obrigatória' }} 
-            error={ getValues('password') != confirmPassword && '* As senhas devem ser iguais' } 
+            validateOpt={{ 
+              required: '* Senha obrigatória', 
+              validate: (value: string) => value === confirmPassword || '* As senhas devem ser iguais'
+            }} 
+            error={ errors.confirmPassword } 
 
             isPasswordInput
           />
 
           <DefaultPressable 
             style='filled' 
+            format='long' 
             onPress={handleSubmit(handleSubmitSignUp)}
           >
             Cadastrar-se

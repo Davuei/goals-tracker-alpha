@@ -1,5 +1,5 @@
-import { colors } from "@/constants/colors";
-import { Text } from "react-native";
+import { colors } from "@/constants/colors"
+import { Text } from "react-native"
 
 interface DefaultTextProps {
   children: string

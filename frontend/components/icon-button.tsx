@@ -1,33 +1,32 @@
 import { colors } from "@/constants/colors";
 import { Pressable, StyleSheet, View } from "react-native";
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
-
-interface IconButtonProps {
-  onPress: () => void; 
-  children: React.ReactNode
-}
+import { DefaultAnimatedPressable, DefaultAnimatedPressableProps } from "./default-animated-pressable";
 
 const AnimatedButton = Animated.createAnimatedComponent(Pressable)
 
-export function IconButton({ onPress, children }: IconButtonProps) {
-  const scale = useSharedValue(1)
+export function IconButton({ style, format, onPress, children }: DefaultAnimatedPressableProps) {
+  /* const scale = useSharedValue(1)
   
-    const animatedStyle = useAnimatedStyle(() => {
-      return {
-        transform: [{ scale: scale.value }], 
-      }
-    })
-  
-    const handlePressIn = () => {
-      scale.value = withTiming(0.95, { duration: 150 })
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ scale: scale.value }], 
     }
-  
-    const handlePressOut = () => {
-      scale.value = withTiming(1, { duration: 150 })
-    }
+  })
+
+  const handlePressIn = () => {
+    scale.value = withTiming(0.95, { duration: 150 })
+  }
+
+  const handlePressOut = () => {
+    scale.value = withTiming(1, { duration: 150 })
+  } */
 
   return (
-    <AnimatedButton
+    <DefaultAnimatedPressable style={ style } format={ format } onPress={ onPress }>
+      { children }
+    </DefaultAnimatedPressable>
+    /* <AnimatedButton
       style={[
         styles.pressable, 
         animatedStyle
@@ -45,7 +44,7 @@ export function IconButton({ onPress, children }: IconButtonProps) {
       >
         { children }
       </View>
-    </AnimatedButton>
+    </AnimatedButton> */
   )
 }
 

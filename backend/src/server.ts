@@ -63,7 +63,7 @@ app.post('/users/login', async (req, res) => {
         email: email 
       },
       include: {
-        goals: true 
+        goals: true
       } 
     });
     if(!user)
@@ -73,7 +73,7 @@ app.post('/users/login', async (req, res) => {
     if(!passwordMatch)
       return res.status(400).send({ message: 'Senha incorreta.' });
 
-    return res.status(200).send({ data: user, message: 'Usuário logado com sucesso!' });
+    return res.status(200).send({ goals: user.goals, message: 'Usuário logado com sucesso!' });
   } catch(error) {
     console.error(error)
     return res.status(500).send({ message: 'Erro ao buscar usuário. Tente novamente mais tarde.' });

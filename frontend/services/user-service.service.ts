@@ -1,4 +1,4 @@
-import { NewUser } from '@/models/user.model';
+import { LoginData, NewUser } from '@/models/user.model';
 import axios from 'axios'
 
 const api = axios.create({
@@ -6,14 +6,25 @@ const api = axios.create({
   timeout: 5000
 });
 
+// Criação de novo usuário
 export async function createUser(user: NewUser) {
   try {
     const resp = await api.post('/users', user)
 
-    return resp.data.message
-
+    return { status: resp.status, message: resp.data.message }
   } catch(error: any) {
     console.error(error)
-    return error.response.data.message
+    return { status: error.response.status, message: error.response.data.message }
+  }
+}
+
+export async function loginUser(data: LoginData) {
+  try {
+    const resp = await api.post('/users/login', data)
+
+    return { status: resp.status, message: resp.data.message, goals: resp.data.goals }
+  } catch(error: any) {
+    console.error(error)
+    return { status: error.response.status, message: error.response.data.message }
   }
 }
