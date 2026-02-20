@@ -46,7 +46,8 @@ export function DefaultAnimatedPressable({ style, format, onPress, children }: D
         style={[ 
           styles.view, 
           style == 'filled' && styles.viewFilled, 
-          format == 'long' && styles.viewLong
+          format == 'long' && styles.viewLong, 
+          format == 'long-square' && styles.viewLongSquare
         ]}
       >
         { children }
@@ -67,7 +68,7 @@ const styles = StyleSheet.create({
   }, 
   view: {
     width: '100%', 
-    padding: 10, 
+    padding: 8, 
 
     justifyContent: 'center', 
     alignItems: 'center', 
@@ -94,18 +95,21 @@ const styles = StyleSheet.create({
   defaultAnimatedPressableLong: {
     width: '100%', 
 
-    borderRadius: 28
+    borderRadius: 32
   }, 
   defaultAnimatedPressableLongSquare: {
     width: '100%', 
-    padding: 10, 
+    padding: 2, 
 
     borderRadius: 8
   }, 
 
   viewLong: {
-    padding: 8, 
-
     borderRadius: 28
+  }, 
+  viewLongSquare: {
+    justifyContent: 'flex-start', 
+    flexDirection: 'row', 
+    gap: 12
   }
 })

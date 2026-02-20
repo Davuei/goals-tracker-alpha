@@ -1,6 +1,6 @@
-import { colors } from "@/constants/colors";
-import { Link, LinkProps } from "expo-router";
-import { Text } from "react-native";
+import { colors } from "@/constants/colors"
+import { Link, LinkProps } from "expo-router"
+import { Text } from "react-native"
 
 interface LinkComponentProps extends LinkProps {
   children: string

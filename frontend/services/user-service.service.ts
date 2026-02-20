@@ -14,6 +14,7 @@ export async function createUser(user: NewUser) {
     return { status: resp.status, message: resp.data.message }
   } catch(error: any) {
     console.error(error)
+    console.error(error.response.data.message)
     return { status: error.response.status, message: error.response.data.message }
   }
 }
@@ -25,6 +26,7 @@ export async function loginUser(data: LoginData) {
     return { status: resp.status, message: resp.data.message, goals: resp.data.goals }
   } catch(error: any) {
     console.error(error)
+    console.error(error.response.data.message)
     return { status: error.response.status, message: error.response.data.message }
   }
 }

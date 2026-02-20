@@ -7,6 +7,7 @@ import { LinkComponent } from "@/components/link-component";
 import { ScreenContainer } from "@/components/screen-container";
 import { LoginData } from "@/models/user.model";
 import { loginUser } from "@/services/user-service.service";
+import { toastWrapper } from "@/utils/toast-wrapper";
 import { useRouter } from "expo-router";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Alert, View } from "react-native";
@@ -20,11 +21,11 @@ export default function Index() {
   const handleSubmitLogin: SubmitHandler<LoginData> = async (data) => {
     const resp = await loginUser(data)
 
-    if(resp.status == 200 || resp.status == 201)
+    if(resp.status == 200 || resp.status == 201) {
+      toastWrapper.success('Login realizado com sucesso!', resp.message)
       router.replace('/home')
-
-    console.log(resp.message)
-    console.log('GOALS: ', resp.goals)
+    } else
+      toastWrapper.error('Erro ao fazer login', resp.message)
   }
 
   return (

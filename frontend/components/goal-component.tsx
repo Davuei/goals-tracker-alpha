@@ -1,42 +1,19 @@
 import { colors } from "@/constants/colors";
 import { Pressable, StyleSheet, View } from "react-native";
 import { DefaultText } from "./default-text";
-import { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
+import { DefaultAnimatedPressable } from "./default-animated-pressable";
 
 interface GoalComponentProps {
   goalTitle: string
 }
 
 export function GoalComponent({ goalTitle }: GoalComponentProps) {
-  const scale = useSharedValue(1)
+  const handleSelectGoal = () => {
 
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [{ scale: scale.value }],
-    }
-  })
-
-  const handlePressIn = () => {
-    scale.value = withTiming(0.95, { duration: 150 })
-  }
-
-  const handlePressOut = () => {
-    scale.value = withTiming(1, { duration: 150 })
   }
 
   return (
-    <Pressable
-      style={[ 
-        styles.viewContainer, 
-        /* animatedStyle  */
-      ]}
-
-      /* onPressIn={ handlePressIn } 
-      onPressOut={ handlePressOut } */
-    >
-      {/* <View
-        style={ styles.viewContainer }
-      > */}
+    <DefaultAnimatedPressable style='hollow' format='long-square' onPress={ handleSelectGoal }>
         <View
           style={ styles.viewIcon }
         >
@@ -45,22 +22,11 @@ export function GoalComponent({ goalTitle }: GoalComponentProps) {
         <DefaultText>
           { goalTitle }
         </DefaultText>
-      {/* </View> */}
-    </Pressable>
+    </DefaultAnimatedPressable>
   )
 }
 
 const styles = StyleSheet.create({
-  viewContainer: {
-    width: '100%', 
-    padding: 12, 
-    alignItems: 'center', 
-    flexDirection: 'row', 
-    gap: 12, 
-    borderWidth: 2, 
-    borderColor: colors.greenScales.green200, 
-    borderRadius: 8
-  }, 
   viewIcon: {
     width: 48, 
     height: 48, 

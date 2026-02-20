@@ -36,6 +36,7 @@ export default function Home() {
         style={{
           width: '100%', 
           height: '100%', 
+          paddingTop: 12, 
           paddingBottom: 80, 
           gap: 16
         }}
@@ -55,19 +56,26 @@ export default function Home() {
           </IconButton>
         </View>
 
-        {
-          allGoals.length > 0 ? (
-            allGoals.map(goal => {
-              return (
-                <GoalComponent key={ goal.id } goalTitle={ goal.title } />
-              )
-            })
-          ) : (
-            <DefaultText>
-              Comece adicionando uma meta!
-            </DefaultText>
-          )
-        }
+        <View
+          style={{
+            flex: 1,
+            gap: 20
+          }}
+        >
+          {
+            allGoals.length > 0 ? (
+              allGoals.map(goal => {
+                return (
+                  <GoalComponent key={ goal.id } goalTitle={ goal.title } />
+                )
+              })
+            ) : (
+              <DefaultText>
+                Comece adicionando uma meta!
+              </DefaultText>
+            )
+          }
+        </View>
       </View>
     </ScreenContainer>
   )
