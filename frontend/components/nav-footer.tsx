@@ -2,12 +2,14 @@ import { colors } from "@/constants/colors"
 import { Ionicons } from "@expo/vector-icons"
 import { View } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { LinkComponent } from "./link-component"
 import { NavFooterBtn } from "./nav-footer-btn"
+import { usePathname } from "expo-router"
 
 export function NavFooter() {
 
   const insets = useSafeAreaInsets()
+
+  const pathname = usePathname()
 
   return (
     <View
@@ -26,12 +28,29 @@ export function NavFooter() {
 
       <NavFooterBtn 
         href={'/home'}
-        icon={ <Ionicons name='home-sharp' size={ 24 } color={ colors.greenScales.green100 } /> }  
+        icon={ 
+          <Ionicons 
+            name='home-sharp' 
+            size={ 24 } 
+            color={ pathname == '/home' ? colors.greenScales.green100 : colors.backgroundLight } 
+          /> 
+        }  
       >
         Home
-      </NavFooterBtn> 
+      </NavFooterBtn>
 
-      <Ionicons name='person' size={ 24 } color={ colors.backgroundLight } />
+      <NavFooterBtn
+        href={'/profile'} 
+        icon={
+          <Ionicons
+            name='person' 
+            size={ 24 } 
+            color={ pathname == '/profile' ? colors.greenScales.green100 : colors.backgroundLight }
+          />
+        }
+      >
+        Perfil
+      </NavFooterBtn>
     </View>
   )
 }

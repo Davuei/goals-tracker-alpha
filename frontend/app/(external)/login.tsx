@@ -10,9 +10,9 @@ import { loginUser } from "@/services/user-service.service";
 import { toastWrapper } from "@/utils/toast-wrapper";
 import { useRouter } from "expo-router";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Alert, View } from "react-native";
+import { View } from "react-native";
 
-export default function Index() {
+export default function Login() {
 
   const router = useRouter()
 
@@ -98,7 +98,7 @@ export default function Index() {
             <DefaultPressable 
               style='hollow' 
               format='long' 
-              onPress={ () => { router.push('./signup') } }
+              onPress={ () => { router.push('/signup') } }
             >
               Cadastrar-se
             </DefaultPressable>

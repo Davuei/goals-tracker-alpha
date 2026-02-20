@@ -12,9 +12,12 @@ export function NavFooterBtn({ icon, children, href }: NavFooterBtnProps) {
     <Link href={ href }>
       <View
         style={{
+          paddingVertical: 2, 
+          paddingHorizontal: 12, 
           justifyContent: 'center', 
           alignItems: 'center', 
-          flexDirection: 'column'
+          flexDirection: 'column', 
+          borderRadius: 20
         }}
       >
         { icon }
