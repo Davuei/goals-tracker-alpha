@@ -9,3 +9,9 @@ export interface LoginData {
   email: string, 
   password: string
 }
+
+export interface BasicUserData {
+  id: string, 
+  name: string, 
+  email: string
+}

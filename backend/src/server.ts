@@ -2,10 +2,17 @@ import Fastify from "fastify"
 import { PrismaClient } from "./generated/prisma/client";
 import cors from '@fastify/cors'
 import { compare, hash } from "bcryptjs";
-import 'dotenv/config'
+import 'dotenv/config'; 
+import jwt from '@fastify/jwt'
+import { env } from "process";
+import { authenticateToken } from "../middlewares/authenticate-token";
 
 const app = Fastify();
 const prisma = new PrismaClient();
+
+app.register(jwt, {
+  secret: process.env.JWT_KEY as string
+})
 
 // PALIATIVO PARA DESENVOLVIMENTO
 app.register(cors)
@@ -73,7 +80,20 @@ app.post('/users/login', async (req, res) => {
     if(!passwordMatch)
       return res.status(400).send({ message: 'Senha incorreta.' });
 
-    return res.status(200).send({ goals: user.goals, message: 'Usuário logado com sucesso!' });
+    const userData = {
+      id: user.id, 
+      name: user.name, 
+      email: user.email
+    };
+
+    const token = app.jwt.sign({ sub: user.id }, { expiresIn: '30d' });
+
+    return res.status(200).send({ 
+      user: userData, 
+      goals: user.goals, 
+      token: token, 
+      message: 'Usuário logado com sucesso!' 
+    });
   } catch(error) {
     console.error(error)
     return res.status(500).send({ message: 'Erro ao buscar usuário. Tente novamente mais tarde.' });
@@ -81,9 +101,11 @@ app.post('/users/login', async (req, res) => {
 });
 
 // Função que retorna todas as metas de um usuário
-app.get('/users/:userId/goals', async (req, res) => {
+app.get('/users/:userId/goals',{ onRequest: [authenticateToken] } , async (req, res) => {
   try {
-    const { userId } = req.params as { userId: string };
+    /* const { userId } = req.params as { userId: string }; */
+
+    const userId = req.user.sub;
 
     const userGoals = await prisma.goal.findMany({
       where: {

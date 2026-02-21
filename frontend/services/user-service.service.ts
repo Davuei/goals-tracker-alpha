@@ -1,10 +1,6 @@
 import { LoginData, NewUser } from '@/models/user.model';
-import axios, { isAxiosError } from 'axios'
-
-const api = axios.create({
-  baseURL: process.env.EXPO_PUBLIC_API_URL, 
-  timeout: 5000
-});
+import { isAxiosError } from 'axios'
+import { api } from './api';
 
 // Criação de novo usuário
 export async function createUser(user: NewUser) {
@@ -30,7 +26,13 @@ export async function loginUser(data: LoginData) {
   try {
     const resp = await api.post('/users/login', data)
 
-    return { status: resp.status, message: resp.data.message, goals: resp.data.goals }
+    return { 
+      status: resp.status, 
+      user: resp.data.user, 
+      goals: resp.data.goals, 
+      token: resp.data.token, 
+      message: resp.data.message, 
+    }
   } catch(error: any) {
     if(isAxiosError(error)) {
       if(error.response)

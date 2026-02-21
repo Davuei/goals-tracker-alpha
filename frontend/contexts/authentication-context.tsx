@@ -1,0 +1,50 @@
+import { AuthenticationContextData, AuthenticationProviderData } from "@/models/authentication.model";
+import { BasicUserData } from "@/models/user.model";
+import { api } from "@/services/api";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { createContext, useEffect, useState } from "react";
+
+export const AuthenticationContext = createContext<AuthenticationContextData>({} as AuthenticationContextData)
+
+export function AuthenticationProvider({ children }: AuthenticationProviderData) {
+  const [user, setUser] = useState<BasicUserData | null>(null)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+
+  useEffect(() => {
+    async function loadStorageData() {
+      const token = await AsyncStorage.getItem('token')
+      const userData = await AsyncStorage.getItem('userData')
+
+      if(token && userData) {
+        api.defaults.headers.common['Authorization'] = `Bearer ${token}`
+        setUser(JSON.parse(userData))
+      }
+
+      setIsLoading(false)
+    }
+
+    loadStorageData()
+  }, [])
+
+  async function signIn(token: string, userData: BasicUserData) {
+    await AsyncStorage.setItem('token', token)
+    await AsyncStorage.setItem('userData', JSON.stringify(userData))
+
+    api.defaults.headers.common['Authorization'] = `Bearer ${token}`
+
+    setUser(userData)
+  }
+
+  async function signOut() {
+    await AsyncStorage.removeItem('token')
+    await AsyncStorage.removeItem('userData')
+
+    setUser(null)
+  }
+
+  return (
+    <AuthenticationContext.Provider value={{ user, isLoading, signIn, signOut }}>
+      { children }
+    </AuthenticationContext.Provider>
+  )
+}

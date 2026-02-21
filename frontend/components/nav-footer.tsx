@@ -2,7 +2,7 @@ import { colors } from "@/constants/colors"
 import { Ionicons } from "@expo/vector-icons"
 import { View } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { NavFooterBtn } from "./nav-footer-btn"
+import { NavFooterButton } from "./nav-footer-button"
 import { usePathname } from "expo-router"
 
 export function NavFooter() {
@@ -26,7 +26,7 @@ export function NavFooter() {
       }}
     >
 
-      <NavFooterBtn 
+      <NavFooterButton 
         href={'/home'}
         icon={ 
           <Ionicons 
@@ -37,9 +37,9 @@ export function NavFooter() {
         }  
       >
         Home
-      </NavFooterBtn>
+      </NavFooterButton>
 
-      <NavFooterBtn
+      <NavFooterButton
         href={'/profile'} 
         icon={
           <Ionicons
@@ -50,7 +50,7 @@ export function NavFooter() {
         }
       >
         Perfil
-      </NavFooterBtn>
+      </NavFooterButton>
     </View>
   )
 }

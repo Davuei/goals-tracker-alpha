@@ -23,7 +23,7 @@ export default function Home() {
 
   const handleAddNewGoal = async () => {
     const newGoal: Goal = {
-      id: Math.floor(Math.random() * 1000), 
+      id: Math.floor(Math.random() * 1000), // ID PALIATIVO
       title: 'teste'
     }
 

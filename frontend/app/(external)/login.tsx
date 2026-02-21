@@ -5,14 +5,17 @@ import { DefaultText } from "@/components/default-text";
 import { DefaultTitle } from "@/components/default-title";
 import { LinkComponent } from "@/components/link-component";
 import { ScreenContainer } from "@/components/screen-container";
+import { AuthenticationContext } from "@/contexts/authentication-context";
 import { LoginData } from "@/models/user.model";
 import { loginUser } from "@/services/user-service.service";
 import { toastWrapper } from "@/utils/toast-wrapper";
 import { useRouter } from "expo-router";
+import { useContext } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { View } from "react-native";
 
 export default function Login() {
+  const { signIn } = useContext(AuthenticationContext)
 
   const router = useRouter()
 
@@ -22,8 +25,9 @@ export default function Login() {
     const resp = await loginUser(data)
 
     if(resp.status == 200 || resp.status == 201) {
+      await signIn(resp.token, resp.user)
+
       toastWrapper.success('Login realizado com sucesso!', resp.message)
-      router.replace('/home')
     } else
       toastWrapper.error('Erro ao fazer login', resp.message)
   }

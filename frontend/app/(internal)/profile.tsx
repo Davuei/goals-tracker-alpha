@@ -1,4 +1,5 @@
 import { DefaultText } from "@/components/default-text";
+import { LogoutButton } from "@/components/logout-button";
 import { ScreenContainer } from "@/components/screen-container";
 
 export default function Profile() {
@@ -7,6 +8,8 @@ export default function Profile() {
       <DefaultText>
         Profile works!
       </DefaultText>
+
+      <LogoutButton />
     </ScreenContainer>
   )
 }

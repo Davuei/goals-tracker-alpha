@@ -2,12 +2,12 @@ import { colors } from "@/constants/colors"
 import { Link, LinkProps } from "expo-router"
 import { Text, View } from "react-native"
 
-interface NavFooterBtnProps extends LinkProps {
+interface NavFooterButtonProps extends LinkProps {
   icon: React.ReactNode, 
   children: string
 }
 
-export function NavFooterBtn({ icon, children, href }: NavFooterBtnProps) {
+export function NavFooterButton({ icon, children, href }: NavFooterButtonProps) {
   return (
     <Link href={ href }>
       <View
