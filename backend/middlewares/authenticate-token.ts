@@ -11,9 +11,8 @@ declare module '@fastify/jwt' {
 
 export async function authenticateToken(req: FastifyRequest, res: FastifyReply) {
   try {
-    req.jwtVerify();
+    await req.jwtVerify();
   } catch(error) {
-    console.error(error);
     return res.status(401).send({ message: 'Token inválido.' });
   }
 }

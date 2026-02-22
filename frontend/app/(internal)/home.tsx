@@ -3,7 +3,8 @@ import { GoalComponent } from "@/components/goal-component";
 import { IconButton } from "@/components/icon-button";
 import { ScreenContainer } from "@/components/screen-container";
 import { Goal } from "@/models/goal.model";
-import { loadGoals, saveNewGoal } from "@/services/data-service.service";
+import { loadGoals, saveNewGoal } from "@/services/goals-service.service";
+import { toastWrapper } from "@/utils/toast-wrapper";
 import { Ionicons } from '@expo/vector-icons';
 import { useEffect, useState } from "react";
 import { View } from "react-native";
@@ -15,11 +16,10 @@ export default function Home() {
     async function loadAllGoals() {
       const resp = await loadGoals()
 
-      setAllGoals(resp)
+      setAllGoals(resp.data)
     }
-
     loadAllGoals()
-  })
+  }, [])
 
   const handleAddNewGoal = async () => {
     const newGoal: Goal = {
@@ -27,7 +27,15 @@ export default function Home() {
       title: 'teste'
     }
 
-    await saveNewGoal(newGoal)
+    const resp = await saveNewGoal(newGoal)
+
+    if(resp.status == 200 || resp.status == 201) {
+      toastWrapper.success('Meta salva!', resp.message)
+
+      setAllGoals((prevState) => [...prevState, resp.data])
+    }
+    else 
+      toastWrapper.error('Erro ao salvar meta', resp.message)
   }
 
   return (

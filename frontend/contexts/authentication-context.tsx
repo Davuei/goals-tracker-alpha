@@ -10,6 +10,7 @@ export function AuthenticationProvider({ children }: AuthenticationProviderData)
   const [user, setUser] = useState<BasicUserData | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
+  // useEffect que verifica se o usuário está logado e configura as requisições do Axios
   useEffect(() => {
     async function loadStorageData() {
       const token = await AsyncStorage.getItem('token')
@@ -26,6 +27,25 @@ export function AuthenticationProvider({ children }: AuthenticationProviderData)
     loadStorageData()
   }, [])
 
+  // useEffect que configura o Axios para tratar erros 401 (caso o token expire)
+  useEffect(() => {
+    const responseInterceptor = api.interceptors.response.use(
+      (response) => response,
+
+      async (error) => {
+        if(error.response && error.response.status == 401)
+          await signOut()
+
+        return Promise.reject(error)
+      }
+    )
+
+    return () => {
+      api.interceptors.response.eject(responseInterceptor)
+    }
+  }, [])
+
+  // Função de login
   async function signIn(token: string, userData: BasicUserData) {
     await AsyncStorage.setItem('token', token)
     await AsyncStorage.setItem('userData', JSON.stringify(userData))
@@ -35,6 +55,7 @@ export function AuthenticationProvider({ children }: AuthenticationProviderData)
     setUser(userData)
   }
 
+  // Função de logout
   async function signOut() {
     await AsyncStorage.removeItem('token')
     await AsyncStorage.removeItem('userData')

@@ -55,7 +55,7 @@ app.post('/users', async (req, res) => {
 
     return res.status(201).send({ message: 'Usuário criado com sucesso!' });
   } catch(error) {
-    console.error(error)
+    console.error(error);
     return res.status(500).send({ message: 'Erro ao criar usuário. Tente novamente mais tarde.' });
   }
 });
@@ -95,28 +95,27 @@ app.post('/users/login', async (req, res) => {
       message: 'Usuário logado com sucesso!' 
     });
   } catch(error) {
-    console.error(error)
+    console.error(error);
     return res.status(500).send({ message: 'Erro ao buscar usuário. Tente novamente mais tarde.' });
   }
 });
 
 // Função que retorna todas as metas de um usuário
-app.get('/users/:userId/goals',{ onRequest: [authenticateToken] } , async (req, res) => {
+app.get('/users/goals',{ onRequest: [authenticateToken] } , async (req, res) => {
   try {
-    /* const { userId } = req.params as { userId: string }; */
-
-    const userId = req.user.sub;
+    const tokenUserId = req.user.sub;
 
     const userGoals = await prisma.goal.findMany({
       where: {
-        userId: userId
+        userId: tokenUserId
       }
-    })
+    });
     if(!userGoals)
-      return res.status(204).send({ message: 'Nenhuma meta encontrada' });
-    return res.status(200).send({ data: userGoals });
+      return res.status(204).send({ message: 'Nenhuma meta encontrada.' });
+
+    return res.status(200).send({ goals: userGoals });
   } catch(error) {
-    console.error(error)
+    console.error(error);
     return res.status(500).send({ message: 'Erro ao buscar metas. Tente novamente mais tarde.' });
   }
 });
@@ -134,8 +133,35 @@ app.get('/goals', async (_, res) => {
     if(allGoals)
       return res.status(200).send({ data: allGoals });
   } catch(error) {
-    console.error(error)
-    return res.status(500).send({ message: 'Erro ao buscar metas' });
+    console.error(error);
+    return res.status(500).send({ message: 'Erro ao buscar metas. Tente novamente mais tarde.' });
+  }
+});
+
+// Função para criar uma nova meta
+app.post('/goals', { onRequest: authenticateToken }, async (req, res) => {
+  try {
+    const userId = req.user.sub;
+
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+    if(!user)
+      return res.status(404).send({ message: 'Usuário não encontrado.' });
+
+    const { title } = req.body as any;
+    if(!title) 
+      return res.status(400).send({ message: 'Título inválido.' });
+
+    const newGoal = await prisma.goal.create({
+      data: {
+        title: title, 
+        userId: userId
+      }
+    })
+
+    return res.status(201).send({ data: newGoal, message: `Meta '${ title }' criada com sucesso!` });
+  } catch(error) {
+    console.error(error);
+    return res.status(500).send({ message: 'Erro ao criar meta. Tente novamente mais tarde.' });
   }
 });
 
@@ -155,8 +181,8 @@ app.get('/goals/:goalId', async(req, res) => {
 
     return res.status(200).send({ data: goal });
   } catch(error) {
-    console.error(error)
-    res.status(500).send({ message: 'Erro ao buscar meta. Tente novamente mais tarde' });
+    console.error(error);
+    res.status(500).send({ message: 'Erro ao buscar meta. Tente novamente mais tarde.' });
   }
 });
 
