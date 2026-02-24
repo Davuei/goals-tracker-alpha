@@ -6,6 +6,7 @@ import { LinkComponent } from "@/components/link-component";
 import { ScreenContainer } from "@/components/screen-container";
 import { NewUser } from "@/models/user.model";
 import { createUser } from "@/services/user-service.service";
+import { toastWrapper } from "@/utils/toast-wrapper";
 import { useRouter } from "expo-router";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { View } from "react-native";
@@ -20,10 +21,11 @@ export default function SignUp() {
   const handleSubmitSignUp: SubmitHandler<NewUser> = async (data) => {
     const resp = await createUser(data)
 
-    if(resp.status == 200 || resp.status == 201)
-      router.replace('../')
-
-    console.log(resp.message)
+    if(resp.status == 200 || resp.status == 201) {
+      toastWrapper.success('Usuário criado!', resp.message)
+      router.replace('/login')
+    } else
+      toastWrapper.error('Erro ao criar usuário', resp.message)
   }
 
   return (
@@ -43,11 +45,11 @@ export default function SignUp() {
             gap: 12
           }}
         >
-          <DefaultTitle>
+          <DefaultTitle titleColor='white'>
             Crie uma conta!
           </DefaultTitle>
 
-          <DefaultText>
+          <DefaultText textColor='white'>
             Com uma conta, suas metas ficam salvas online, sem risco de perdê-las!
           </DefaultText>
         </View>
@@ -117,11 +119,11 @@ export default function SignUp() {
         </View>
 
         <View>
-          <DefaultText>
+          <DefaultText textColor='white'>
             Ao criar uma conta você concorda com nossos
           </DefaultText>
 
-          <LinkComponent href={'./'}>
+          <LinkComponent href={'/login'}>
             Termos de Uso e Políticas de Privacidade
           </LinkComponent>
         </View>

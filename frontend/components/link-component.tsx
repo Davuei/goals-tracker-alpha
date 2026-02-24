@@ -1,6 +1,7 @@
 import { colors } from "@/constants/colors"
 import { Link, LinkProps } from "expo-router"
 import { Text } from "react-native"
+import { DefaultSecondaryText } from "./default-secondary-text"
 
 interface LinkComponentProps extends LinkProps {
   children: string
@@ -11,16 +12,9 @@ export function LinkComponent({ href, children }: LinkComponentProps) {
     <Link 
       href={ href }
     >
-      <Text 
-        style={{
-          fontSize: 16, 
-          textAlign: 'center', 
-          color: colors.textSecondary, 
-          textDecorationLine: 'underline'
-        }}
-      >
+      <DefaultSecondaryText underline>
         { children }
-      </Text>
+      </DefaultSecondaryText>
     </Link>
   )
 }

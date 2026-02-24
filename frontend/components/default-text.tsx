@@ -2,16 +2,17 @@ import { colors } from "@/constants/colors"
 import { Text } from "react-native"
 
 interface DefaultTextProps {
-  children: string
+  textColor: 'white' | 'dark', 
+  children: string 
 }
 
-export function DefaultText({ children }: DefaultTextProps) {
+export function DefaultText({ textColor, children }: DefaultTextProps) {
   return (
     <Text
       style={{
         fontSize: 16, 
         textAlign: 'center', 
-        color: colors.textPrimary
+        color: textColor == 'white' ? colors.textPrimary : colors.textPrimaryDark
       }}
     >
       { children }

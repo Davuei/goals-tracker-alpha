@@ -62,8 +62,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center', 
     alignItems: 'center', 
 
-    borderWidth: 2, 
-    borderColor: colors.greenScales.green200, 
+    outlineWidth: 2, 
+    outlineColor: colors.greenScales.green200, 
+
     borderRadius: 8
   }, 
   view: {
@@ -82,13 +83,11 @@ const styles = StyleSheet.create({
 
   // STYLE FILLED STYLES
   defaultAnimatedPressableFilled: {
-    backgroundColor: colors.greenScales.green200
+    borderWidth: 2, 
+    borderColor: 'transparent', 
   }, 
   viewFilled: {
-    backgroundColor: colors.greenScales.green200, 
-
-    borderWidth: 2, 
-    borderColor: colors.backgroundDark, 
+    backgroundColor: colors.greenScales.green200
   }, 
 
   // FORMAT STYLES

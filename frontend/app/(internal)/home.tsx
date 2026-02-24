@@ -1,3 +1,5 @@
+import { DefaultInput } from "@/components/default-input";
+import { DefaultModal } from "@/components/default-modal";
 import { DefaultText } from "@/components/default-text";
 import { GoalComponent } from "@/components/goal-component";
 import { IconButton } from "@/components/icon-button";
@@ -7,24 +9,33 @@ import { loadGoals, saveNewGoal } from "@/services/goals-service.service";
 import { toastWrapper } from "@/utils/toast-wrapper";
 import { Ionicons } from '@expo/vector-icons';
 import { useEffect, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { View } from "react-native";
 
 export default function Home() {
   const [allGoals, setAllGoals] = useState<Goal[]>([])
+  const [showNewGoalModal, setShowNewGoalModal] = useState<boolean>(false)
+
+  const { control, reset,  handleSubmit, formState: { errors } } = useForm<{ title: string }>()
 
   useEffect(() => {
     async function loadAllGoals() {
       const resp = await loadGoals()
 
-      setAllGoals(resp.data)
+      if(resp.status != undefined && resp.data != undefined)
+        setAllGoals(resp.data)
+      else
+        setAllGoals(resp)
     }
     loadAllGoals()
   }, [])
 
-  const handleAddNewGoal = async () => {
+  const handleSwitchNewGoalModal = () => setShowNewGoalModal((prevState) => !prevState)
+
+  const handleAddNewGoal: SubmitHandler<{ title: string }> = async (data) => {
     const newGoal: Goal = {
       id: Math.floor(Math.random() * 1000), // ID PALIATIVO
-      title: 'teste'
+      title: data.title
     }
 
     const resp = await saveNewGoal(newGoal)
@@ -36,7 +47,12 @@ export default function Home() {
     }
     else 
       toastWrapper.error('Erro ao salvar meta', resp.message)
+
+    setShowNewGoalModal(false)
+    reset()
   }
+
+
 
   return (
     <ScreenContainer>
@@ -58,7 +74,7 @@ export default function Home() {
           <IconButton 
             style='filled' 
             format='square' 
-            onPress={ handleAddNewGoal }
+            onPress={ handleSwitchNewGoalModal }
           >
             <Ionicons name='add' size={24} color={'transparent'} />
           </IconButton>
@@ -78,13 +94,35 @@ export default function Home() {
                 )
               })
             ) : (
-              <DefaultText>
+              <DefaultText textColor='white'>
                 Comece adicionando uma meta!
               </DefaultText>
             )
           }
         </View>
       </View>
+
+      <DefaultModal 
+        title='Adicione uma nova meta!' 
+        text='Dê um nome para a sua meta!' 
+        textColor='white' 
+        confirmText='Criar meta' 
+        closeText='Cancelar' 
+        onConfirm={ handleSubmit(handleAddNewGoal) } 
+        onClose={ handleSwitchNewGoalModal } 
+        isOpen={ showNewGoalModal }
+      >
+        <DefaultInput 
+          label='Meta' 
+          textColor='dark' 
+          keyboardType='default' 
+
+          control={ control } 
+          inputName='title' 
+          validateOpt={{ required: '* Nome obrigatório' }} 
+          error={ errors.title }
+        />
+      </DefaultModal>
     </ScreenContainer>
   )
 }

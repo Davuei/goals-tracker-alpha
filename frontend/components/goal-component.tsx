@@ -19,7 +19,7 @@ export function GoalComponent({ goalTitle }: GoalComponentProps) {
         >
 
         </View>
-        <DefaultText>
+        <DefaultText textColor='white'>
           { goalTitle }
         </DefaultText>
     </DefaultAnimatedPressable>

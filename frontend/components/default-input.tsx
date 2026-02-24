@@ -6,6 +6,7 @@ import { ErrorMessageComponent } from "./error-message-component";
 
 interface DefaultInputProps extends TextInputProps {
   label: string; 
+  textColor?: 'dark' | 'white' 
   keyboardType: 'default' | 'email-address' | 'numeric' | 'number-pad'; 
   isPasswordInput?: boolean; 
 
@@ -17,6 +18,7 @@ interface DefaultInputProps extends TextInputProps {
 
 export function DefaultInput({ 
   label, 
+  textColor = 'white', 
   keyboardType, 
   isPasswordInput = false, 
   control, 
@@ -30,7 +32,7 @@ export function DefaultInput({
   return (
     <View style={ styles.viewContainer }>
       <View style={ styles.viewLabel }>
-        <Text style={ styles.text }>
+        <Text style={{ color: textColor == 'dark' ? colors.backgroundDark : colors.backgroundLight }}>
           { label }
         </Text>
 
@@ -50,13 +52,14 @@ export function DefaultInput({
         render={({ field: { onChange, value } }) => (
           <TextInput 
             style={[ 
+              {color: textColor == 'dark' ? colors.textPrimaryDark : colors.textPrimary }, 
               styles.textInput, 
               isFocused && styles.focusedTextInput
             ]} 
 
             keyboardType={ keyboardType } 
             secureTextEntry={ isPasswordInput } 
-            autoCapitalize={ isPasswordInput ? 'none' : 'sentences' } 
+            autoCapitalize={ (isPasswordInput || keyboardType == 'email-address') ? 'none' : 'sentences' } 
             autoCorrect={ !isPasswordInput } 
             autoComplete='off' 
 
@@ -91,23 +94,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row', 
     gap: 8
   }, 
-  text: {
-    color: colors.textPrimary
-  }, 
   textInput: {
     width: '100%', 
-    paddingHorizontal: 8, 
+    paddingHorizontal: 12, 
 
     fontSize: 14, 
-    color: colors.textPrimary, 
     
     backgroundColor: 'transparent', 
 
-    borderColor: colors.greenScales.green100, 
+    borderColor: colors.greenScales.green200, 
     borderWidth: 2, 
     borderRadius: 8
   }, 
   focusedTextInput: {
-    borderColor: colors.greenScales.green200
+    borderColor: colors.greenScales.green100, 
+    borderRadius: 16
   }
 })

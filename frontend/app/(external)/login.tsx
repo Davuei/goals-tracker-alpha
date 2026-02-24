@@ -1,25 +1,35 @@
 import { AnimatedScreenContainer } from "@/components/animated-screen-container";
 import { DefaultInput } from "@/components/default-input";
+import { DefaultModal } from "@/components/default-modal";
 import { DefaultPressable } from "@/components/default-pressable";
+import { DefaultSecondaryText } from "@/components/default-secondary-text";
 import { DefaultText } from "@/components/default-text";
 import { DefaultTitle } from "@/components/default-title";
-import { LinkComponent } from "@/components/link-component";
 import { ScreenContainer } from "@/components/screen-container";
 import { AuthenticationContext } from "@/contexts/authentication-context";
 import { LoginData } from "@/models/user.model";
 import { loginUser } from "@/services/user-service.service";
 import { toastWrapper } from "@/utils/toast-wrapper";
 import { useRouter } from "expo-router";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { View } from "react-native";
+import { Pressable, View } from "react-native";
 
 export default function Login() {
   const { signIn } = useContext(AuthenticationContext)
 
+  const { control, handleSubmit, formState: { errors } } = useForm<LoginData>()
+  
+  const [showGuestModal, setShowGuestModal] = useState<boolean>(false)
+
   const router = useRouter()
 
-  const { control, handleSubmit, formState: { errors } } = useForm<LoginData>()
+  const handleSwitchShowGuestModal = () => setShowGuestModal((prevState) => !prevState)
+
+  const handleEnterGuestMode = async () => {
+    setShowGuestModal(false)
+    await signIn('', {id: '', email: '', name: ''})
+  }
 
   const handleSubmitLogin: SubmitHandler<LoginData> = async (data) => {
     const resp = await loginUser(data)
@@ -38,8 +48,8 @@ export default function Login() {
         <View
           style={{ 
             width: '100%', 
-            height: '100%', 
-            justifyContent: 'center', 
+            height: '80%', 
+            justifyContent: 'space-evenly', 
             alignItems: 'center', 
             gap: 28
           }}
@@ -50,11 +60,11 @@ export default function Login() {
               gap: 12
             }}
           >
-            <DefaultTitle>
+            <DefaultTitle titleColor='white'>
               Bem-vindo!
             </DefaultTitle>
 
-            <DefaultText>
+            <DefaultText textColor='white'>
               Faça login com seu e-mail e senha ou entre sem criar uma conta.
             </DefaultText>
           </View>
@@ -108,9 +118,22 @@ export default function Login() {
             </DefaultPressable>
           </View>
 
-          <LinkComponent href={'/home'}>
-            Entrar sem conta
-          </LinkComponent>
+          <Pressable onPress={ handleSwitchShowGuestModal }>
+            <DefaultSecondaryText underline>
+              Entrar sem conta
+            </DefaultSecondaryText>
+          </Pressable>
+
+          <DefaultModal 
+            title='Entrar como convidado?' 
+            text='Usuários no modo convidado salvam seus dados localmente. Crie uma conta para salvar seus dados online ou sincronizar os dados locais.' 
+            textColor='white' 
+            confirmText='Continuar sem conta' 
+            closeText='Voltar' 
+            isOpen={ showGuestModal } 
+            onConfirm={ handleEnterGuestMode } 
+            onClose={ handleSwitchShowGuestModal }
+          />
         </View>
       </AnimatedScreenContainer>
     </ScreenContainer>

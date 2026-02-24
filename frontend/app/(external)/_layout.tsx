@@ -11,7 +11,7 @@ export default function ExternalLayout() {
       }}
     >
       <Stack.Screen name='login' options={{ title: 'Login' }} />
-      <Stack.Screen name='signup' options={{ title: 'Registrar' }} />
+      <Stack.Screen name='signup' options={{ title: 'Cadastro' }} />
     </Stack>
   )
 }

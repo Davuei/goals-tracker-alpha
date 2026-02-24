@@ -5,7 +5,7 @@ import { ScreenContainer } from "@/components/screen-container";
 export default function Profile() {
   return (
     <ScreenContainer>
-      <DefaultText>
+      <DefaultText textColor='white'>
         Profile works!
       </DefaultText>
 

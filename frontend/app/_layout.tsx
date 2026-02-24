@@ -43,8 +43,8 @@ function RouteGuard() {
 
   if(isLoading) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#121212' }}>
-        <ActivityIndicator size="large" color="#007AFF" />
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.backgroundDark }}>
+        <ActivityIndicator size='large' color={ colors.greenScales.green200 } />
       </View>
     )
   }

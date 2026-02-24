@@ -1,31 +1,24 @@
 import { colors } from "@/constants/colors"
-import { StyleSheet, Text } from "react-native"
+import { Text } from "react-native"
 
 interface DefaultAnimatedPressableTextProps {
   style: 'filled' | 'hollow', 
+  textColor?: 'white' | 'dark', 
   children: string
 }
 
-export function DefaultAnimatedPressableText({ style, children }: DefaultAnimatedPressableTextProps) {
+export function DefaultAnimatedPressableText({ style, textColor = 'dark',  children }: DefaultAnimatedPressableTextProps) {
   return (
     <Text
-      style={[ 
-        styles.text, 
-        style == 'filled' && styles.textFilled
-      ]}
+      style={{
+        fontSize: 20, 
+        fontWeight: 'bold', 
+        color: style == 'filled' ? (
+          textColor == 'dark' ? colors.backgroundDark : colors.backgroundLight
+        ) : colors.greenScales.green200
+      }}
     >
       { children }
     </Text>
   )
 }
-
-const styles = StyleSheet.create({
-  text: {
-    fontSize: 20, 
-    fontWeight: 'bold', 
-    color: colors.greenScales.green200
-  }, 
-  textFilled: {
-    color: 'transparent'
-  }
-})
