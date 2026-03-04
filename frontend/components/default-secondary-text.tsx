@@ -10,7 +10,7 @@ export function DefaultSecondaryText({ underline = false, children }: DefaultSec
   return (
     <Text
       style={{
-        fontSize: 16, 
+        fontSize: 14, 
         textAlign: 'center', 
         color: colors.textSecondary, 
         textDecorationLine: underline ? 'underline' : 'none'

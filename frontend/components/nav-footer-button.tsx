@@ -3,13 +3,13 @@ import { Link, LinkProps } from "expo-router"
 import { Text, View } from "react-native"
 
 interface NavFooterButtonProps extends LinkProps {
-  icon: React.ReactNode, 
+  icon: React.ReactNode; 
   children: string
 }
 
-export function NavFooterButton({ icon, children, href }: NavFooterButtonProps) {
+export function NavFooterButton({ icon, href, children }: NavFooterButtonProps) {
   return (
-    <Link href={ href }>
+    <Link href={ href } replace>
       <View
         style={{
           paddingVertical: 2, 

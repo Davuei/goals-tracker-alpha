@@ -26,7 +26,6 @@ export function ScreenContainer({ children }: ScreenContainerProps) {
         <ScrollView
           style={{
             paddingHorizontal: 20, 
-            paddingBottom: insets.bottom, 
             flex: 1, 
           }}
 

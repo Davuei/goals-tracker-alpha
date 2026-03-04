@@ -1,4 +1,4 @@
-import { Goal } from '@/models/goal.model'
+import { NewGoal } from '@/models/goal.model'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { api } from './api'
 import { isAxiosError } from 'axios'
@@ -30,7 +30,7 @@ export async function loadGoals() {
 }
 
 // Salva uma nova meta localmente
-export async function saveNewGoal(newGoal: Goal) {
+export async function saveNewGoal(newGoal: NewGoal) {
   try {
     const token = await AsyncStorage.getItem('token')
     const userData = await AsyncStorage.getItem('userData')

@@ -25,6 +25,8 @@ model Goal {
   id          String    @id @default(uuid())
   title       String
   createdAt   DateTime  @default(now())
+  startDate   DateTime
+  endDate     DateTime
 
   userId      String
   user        User      @relation(fields: [userId], references: [id])

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Control, Controller } from 'react-hook-form';
 import { StyleSheet, Text, TextInput, TextInputProps, View } from "react-native";
 import { ErrorMessageComponent } from "./error-message-component";
+import { DefaultLabel } from "./default-label";
 
 interface DefaultInputProps extends TextInputProps {
   label: string; 
@@ -32,9 +33,9 @@ export function DefaultInput({
   return (
     <View style={ styles.viewContainer }>
       <View style={ styles.viewLabel }>
-        <Text style={{ color: textColor == 'dark' ? colors.backgroundDark : colors.backgroundLight }}>
+        <DefaultLabel labelColor={ textColor }>
           { label }
-        </Text>
+        </DefaultLabel>
 
         { 
           error && (
@@ -108,6 +109,6 @@ const styles = StyleSheet.create({
   }, 
   focusedTextInput: {
     borderColor: colors.greenScales.green100, 
-    borderRadius: 16
+    borderRadius: 20
   }
 })

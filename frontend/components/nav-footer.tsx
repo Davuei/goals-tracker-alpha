@@ -34,7 +34,7 @@ export function NavFooter() {
             size={ 24 } 
             color={ pathname == '/home' ? colors.greenScales.green100 : colors.backgroundLight } 
           /> 
-        }  
+        } 
       >
         Home
       </NavFooterButton>

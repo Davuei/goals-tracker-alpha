@@ -147,16 +147,21 @@ app.post('/goals', { onRequest: authenticateToken }, async (req, res) => {
     if(!user)
       return res.status(404).send({ message: 'Usuário não encontrado.' });
 
-    const { title } = req.body as any;
+    const { title, startDate, endDate } = req.body as any;
     if(!title) 
       return res.status(400).send({ message: 'Título inválido.' });
+
+    if(!startDate || !endDate)
+      return res.status(400).send({ message: 'Datas inválidas.' });
 
     const newGoal = await prisma.goal.create({
       data: {
         title: title, 
+        startDate: startDate, 
+        endDate: endDate, 
         userId: userId
       }
-    })
+    });
 
     return res.status(201).send({ data: newGoal, message: `Meta '${ title }' criada com sucesso!` });
   } catch(error) {

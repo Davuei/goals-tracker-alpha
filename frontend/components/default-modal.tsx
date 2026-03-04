@@ -3,7 +3,7 @@ import { Modal, Pressable, StyleSheet, View } from "react-native"
 import { DefaultTitle } from "./default-title"
 import { DefaultText } from "./default-text"
 import { DefaultPressable } from "./default-pressable"
-import Animated, { Keyframe, useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
+import Animated, { Keyframe } from "react-native-reanimated"
 
 interface DefaultModalProps {
   title: string, 
@@ -106,20 +106,23 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end'
   }, 
   viewBottomSheet: {
+    maxHeight: '85%', 
     paddingHorizontal: 20, 
-    paddingVertical: 40, 
+    paddingVertical: 20, 
 
     justifyContent: 'center', 
     alignItems: 'center', 
-    gap: 16, 
+    gap: 12, 
 
     backgroundColor: colors.backgroundLight, 
 
-    borderTopLeftRadius: 24, 
-    borderTopRightRadius: 24
+    borderTopLeftRadius: 28, 
+    borderTopRightRadius: 28
   }, 
   viewChildren: {
-    width: '100%'
+    width: '100%', 
+
+    gap: 4
   }, 
   viewButtons: {
     width: '100%', 

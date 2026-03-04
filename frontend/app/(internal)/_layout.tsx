@@ -16,6 +16,7 @@ export default function InternalLayout() {
         >
           <Stack.Screen name='home' options={{ title: 'Home' }} />
           <Stack.Screen name='profile' options={{ title: 'Perfil' }} />
+          <Stack.Screen name='create-new-goal' options={{ title: 'Criar nova meta' }} />
         </Stack>
       </View>
 
