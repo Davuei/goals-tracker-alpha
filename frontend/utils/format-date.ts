@@ -11,7 +11,9 @@ export function formatHyphenStringDate(date: string) {
 export function formatISOStringDate(strDate: string) {
   const date = new Date(strDate)
 
-  const formatFormula = new Intl.DateTimeFormat('pt-BR')
+  const formatFormula = new Intl.DateTimeFormat('pt-BR', {
+    timeZone: 'UTC'
+  })
 
   return formatFormula.format(date)
 }
