@@ -6,6 +6,7 @@ import { DefaultSecondaryText } from "@/components/default-secondary-text";
 import { DefaultText } from "@/components/default-text";
 import { DefaultTitle } from "@/components/default-title";
 import { ScreenContainer } from "@/components/screen-container";
+import { successStatusCodes } from "@/constants/status-codes";
 import { AuthenticationContext } from "@/contexts/authentication-context";
 import { LoginData } from "@/models/user.model";
 import { loginUser } from "@/services/user-service.service";
@@ -18,7 +19,7 @@ import { Pressable, View } from "react-native";
 export default function Login() {
   const { signIn } = useContext(AuthenticationContext)
 
-  const { control, handleSubmit, formState: { errors } } = useForm<LoginData>()
+  const { control, handleSubmit, formState: { isSubmitting, errors } } = useForm<LoginData>()
   
   const [showGuestModal, setShowGuestModal] = useState<boolean>(false)
 
@@ -34,9 +35,8 @@ export default function Login() {
   const handleSubmitLogin: SubmitHandler<LoginData> = async (data) => {
     const resp = await loginUser(data)
 
-    if(resp.status == 200 || resp.status == 201) {
+    if(successStatusCodes.includes(resp.status)) {
       await signIn(resp.token, resp.user)
-
       toastWrapper.success('Login realizado com sucesso!', resp.message)
     } else
       toastWrapper.error('Erro ao fazer login', resp.message)
@@ -104,7 +104,8 @@ export default function Login() {
             <DefaultPressable 
               style='filled' 
               format='long' 
-              onPress={ handleSubmit(handleSubmitLogin) }
+              onPress={ handleSubmit(handleSubmitLogin) } 
+              setDisabled={ isSubmitting }
             >
               Entrar
             </DefaultPressable>

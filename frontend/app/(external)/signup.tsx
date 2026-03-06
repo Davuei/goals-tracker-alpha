@@ -4,6 +4,7 @@ import { DefaultText } from "@/components/default-text";
 import { DefaultTitle } from "@/components/default-title";
 import { LinkComponent } from "@/components/link-component";
 import { ScreenContainer } from "@/components/screen-container";
+import { successStatusCodes } from "@/constants/status-codes";
 import { NewUser } from "@/models/user.model";
 import { createUser } from "@/services/user-service.service";
 import { toastWrapper } from "@/utils/toast-wrapper";
@@ -21,7 +22,7 @@ export default function SignUp() {
   const handleSubmitSignUp: SubmitHandler<NewUser> = async (data) => {
     const resp = await createUser(data)
 
-    if(resp.status == 200 || resp.status == 201) {
+    if(successStatusCodes.includes(resp.status)) {
       toastWrapper.success('Usuário criado!', resp.message)
       router.replace('/login')
     } else

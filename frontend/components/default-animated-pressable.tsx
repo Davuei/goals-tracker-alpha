@@ -3,15 +3,22 @@ import { Pressable, StyleSheet, View } from "react-native"
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
 
 export interface DefaultAnimatedPressableProps {
-  style: 'filled' | 'hollow', 
-  format: 'long' | 'square' | 'long-square', 
-  onPress: () => void, 
+  style: 'filled' | 'hollow'; 
+  format: 'long' | 'square' | 'long-square'; 
+  onPress: () => void; 
+  setDisabled?: boolean; 
   children: any
 }
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable)
 
-export function DefaultAnimatedPressable({ style, format, onPress, children }: DefaultAnimatedPressableProps) {
+export function DefaultAnimatedPressable({ 
+  style, 
+  format, 
+  onPress, 
+  setDisabled=false, 
+  children 
+}: DefaultAnimatedPressableProps) {
   const scale = useSharedValue(1)
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -36,18 +43,22 @@ export function DefaultAnimatedPressable({ style, format, onPress, children }: D
         style == 'filled' && styles.defaultAnimatedPressableFilled, 
         format == 'long' && styles.defaultAnimatedPressableLong, 
         format == 'long-square' && styles.defaultAnimatedPressableLongSquare, 
+        setDisabled && styles.disabledPressable
       ]} 
 
       onPress={ onPress }
       onPressIn={ handlePressIn } 
-      onPressOut={ handlePressOut }
+      onPressOut={ handlePressOut } 
+
+      disabled={ setDisabled }
     >
       <View
         style={[ 
           styles.view, 
           style == 'filled' && styles.viewFilled, 
           format == 'long' && styles.viewLong, 
-          format == 'long-square' && styles.viewLongSquare
+          format == 'long-square' && styles.viewLongSquare, 
+          setDisabled && styles.disabledView
         ]}
       >
         { children }
@@ -110,5 +121,13 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start', 
     flexDirection: 'row', 
     gap: 12
+  }, 
+
+  // DISABLED STYLES
+  disabledPressable: {
+    outlineColor: colors.grayScales.gray300
+  }, 
+  disabledView: {
+    backgroundColor: colors.grayScales.gray300
   }
 })

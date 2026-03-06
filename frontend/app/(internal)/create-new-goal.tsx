@@ -14,6 +14,7 @@ import { DefaultInput } from "@/components/default-input"
 import { saveNewGoal } from "@/services/goals-service.service"
 import { toastWrapper } from "@/utils/toast-wrapper"
 import { useRouter } from "expo-router"
+import { successStatusCodes } from "@/constants/status-codes"
 
 export default function CreateNewGoal() {
   const [showCalendarModal, setShowCalendarModal] = useState<boolean>(false)
@@ -37,9 +38,8 @@ export default function CreateNewGoal() {
     
     const resp = await saveNewGoal(newGoal)
 
-    if(resp.status == 200 || resp.status == 201) {
+    if(successStatusCodes.includes(resp.status)) {
       toastWrapper.success('Meta criada com sucesso!', resp.message)
-
       router.replace('/home')
     } else
       toastWrapper.error('Erro ao criar meta', resp.message)

@@ -12,5 +12,11 @@ export const colors = {
     green200: '#42873C', 
     green300: '#33682E', 
     green400: '#2A5527'
+  }, 
+
+  grayScales: {
+    gray100: '#a3a3a3', 
+    gray200: '#8a8a8a', 
+    gray300: '#6b6b6b'
   }
 }

@@ -1,3 +1,4 @@
+import { criticalStatusCodes } from "@/constants/status-codes";
 import { AuthenticationContextData, AuthenticationProviderData } from "@/models/authentication.model";
 import { BasicUserData } from "@/models/user.model";
 import { api } from "@/services/api";
@@ -27,13 +28,13 @@ export function AuthenticationProvider({ children }: AuthenticationProviderData)
     loadStorageData()
   }, [])
 
-  // useEffect que configura o Axios para tratar erros 401 (caso o token expire)
+  // useEffect que configura o Axios para tratar erros (token expirado ou problemas com o servidor)
   useEffect(() => {
     const responseInterceptor = api.interceptors.response.use(
       (response) => response,
 
       async (error) => {
-        if(error.response && error.response.status == 401)
+        if(criticalStatusCodes.includes(error.response?.status) || error.code == 'ERR_NETWORK') 
           await signOut()
 
         return Promise.reject(error)

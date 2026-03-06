@@ -2,8 +2,10 @@ import { DefaultText } from "@/components/default-text"
 import { GoalComponent } from "@/components/goal-component"
 import { IconButton } from "@/components/icon-button"
 import { ScreenContainer } from "@/components/screen-container"
+import { successStatusCodes } from "@/constants/status-codes"
 import { Goal } from "@/models/goal.model"
 import { loadGoals } from "@/services/goals-service.service"
+import { toastWrapper } from "@/utils/toast-wrapper"
 import { Ionicons } from '@expo/vector-icons'
 import { useRouter } from "expo-router"
 import { useEffect, useState } from "react"
@@ -18,9 +20,12 @@ export default function Home() {
     async function loadAllGoals() {
       const resp = await loadGoals()
 
-      if(resp.status && resp.data)
-        setAllGoals(resp.data)
-      else
+      if(resp.status) {
+        if(successStatusCodes.includes(resp.status))
+          setAllGoals(resp.data)
+        else 
+          toastWrapper.error('Erro ao carregar dados', resp.message)
+      } else
         setAllGoals(resp)
     }
     loadAllGoals()

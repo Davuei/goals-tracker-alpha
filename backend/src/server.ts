@@ -111,7 +111,7 @@ app.get('/users/goals',{ onRequest: [authenticateToken] } , async (req, res) => 
       }
     });
     if(!userGoals)
-      return res.status(204).send({ message: 'Nenhuma meta encontrada.' });
+      return res.status(204).send({ goals: [], message: 'Nenhuma meta encontrada.' });
 
     return res.status(200).send({ goals: userGoals });
   } catch(error) {

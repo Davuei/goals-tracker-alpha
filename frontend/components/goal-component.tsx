@@ -18,9 +18,7 @@ export function GoalComponent({ goalTitle, startDate, endDate }: GoalComponentPr
 
   return (
     <DefaultAnimatedPressable style='hollow' format='long-square' onPress={ handleSelectGoal }>
-        <View
-          style={ styles.viewIcon }
-        >
+        <View style={ styles.viewIcon }>
 
         </View>
 
