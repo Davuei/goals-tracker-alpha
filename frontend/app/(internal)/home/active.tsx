@@ -4,31 +4,31 @@ import { IconButton } from "@/components/icon-button"
 import { ScreenContainer } from "@/components/screen-container"
 import { successStatusCodes } from "@/constants/status-codes"
 import { Goal } from "@/models/goal.model"
-import { loadGoals } from "@/services/goals-service.service"
+import { loadActiveGoals } from "@/services/goals-service.service"
 import { toastWrapper } from "@/utils/toast-wrapper"
 import { Ionicons } from '@expo/vector-icons'
 import { useRouter } from "expo-router"
 import { useEffect, useState } from "react"
-import { View } from "react-native"
+import { FlatList, View } from "react-native"
 
-export default function Home() {
-  const [allGoals, setAllGoals] = useState<Goal[]>([])
+export default function ActiveGoals() {
+  const [activeGoals, setActiveGoals] = useState<Goal[]>([])
 
   const router = useRouter()
 
   useEffect(() => {
-    async function loadAllGoals() {
-      const resp = await loadGoals()
+    async function getActiveGoals() {
+      const resp = await loadActiveGoals()
 
       if(resp.status) {
         if(successStatusCodes.includes(resp.status))
-          setAllGoals(resp.data)
+          setActiveGoals(resp.data)
         else 
           toastWrapper.error('Erro ao carregar dados', resp.message)
       } else
-        setAllGoals(resp)
+        setActiveGoals(resp)
     }
-    loadAllGoals()
+    getActiveGoals()
   }, [])
 
   return (
@@ -37,14 +37,13 @@ export default function Home() {
         style={{
           width: '100%', 
           height: '100%', 
-          paddingTop: 12, 
-          paddingBottom: 80, 
           gap: 16
         }}
       >
         <View
           style={{
             width: '100%', 
+            padding: 2, 
             flexDirection: 'row-reverse'
           }}
         >
@@ -59,25 +58,34 @@ export default function Home() {
 
         <View
           style={{
-            flex: 1,
-            gap: 20
+            flex: 1, 
+            justifyContent: 'center', 
+            alignItems: 'center'
           }}
         >
           {
-            allGoals.length > 0 ? (
-              allGoals.map(goal => {
-                return (
+            activeGoals.length > 0 ? (
+              <FlatList 
+                data={ activeGoals } 
+                keyExtractor={ (goal) => String(goal.id) } 
+
+                contentContainerStyle={{
+                  padding: 2, 
+                  paddingBottom: 40
+                }} 
+                ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
+
+                renderItem={({ item }) => (
                   <GoalComponent 
-                    key={ goal.id } 
-                    goalTitle={ goal.title } 
-                    startDate={ goal.startDate } 
-                    endDate={ goal.endDate }
+                    goalTitle={ item.title } 
+                    startDate={ item.startDate } 
+                    endDate={ item.endDate }
                   />
-                )
-              })
+                )}
+              />
             ) : (
               <DefaultText textColor='white'>
-                Comece adicionando uma meta!
+                {`Nenhuma meta encontrada...\nExperimente adicionar uma nova!`}
               </DefaultText>
             )
           }

@@ -22,17 +22,23 @@ export function NavFooter() {
         backgroundColor: colors.backgroundDark, 
 
         borderTopWidth: 1, 
-        borderTopColor: colors.backgroundLight
+        borderTopColor: colors.grayScales.gray200
       }}
     >
 
       <NavFooterButton 
-        href={'/home'}
+        href={'/home/active'}
         icon={ 
           <Ionicons 
             name='home-sharp' 
             size={ 24 } 
-            color={ pathname == '/home' ? colors.greenScales.green100 : colors.backgroundLight } 
+            color={ 
+              (pathname == '/home/active' || pathname == '/home/expired') 
+                ? 
+              colors.greenScales.green200 
+                : 
+              colors.backgroundLight 
+            } 
           /> 
         } 
       >
@@ -45,7 +51,13 @@ export function NavFooter() {
           <Ionicons
             name='person' 
             size={ 24 } 
-            color={ pathname == '/profile' ? colors.greenScales.green100 : colors.backgroundLight }
+            color={ 
+              pathname == '/profile' 
+                ? 
+              colors.greenScales.green200 
+                : 
+              colors.backgroundLight 
+            }
           />
         }
       >

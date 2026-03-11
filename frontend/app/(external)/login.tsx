@@ -43,7 +43,7 @@ export default function Login() {
   }
 
   return (
-    <ScreenContainer>
+    <ScreenContainer scrollable>
       <AnimatedScreenContainer>
         <View
           style={{ 

@@ -30,7 +30,7 @@ export default function SignUp() {
   }
 
   return (
-    <ScreenContainer>
+    <ScreenContainer scrollable>
       <View
         style={{
           width: '100%', 

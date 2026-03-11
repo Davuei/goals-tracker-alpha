@@ -40,18 +40,18 @@ export default function CreateNewGoal() {
 
     if(successStatusCodes.includes(resp.status)) {
       toastWrapper.success('Meta criada com sucesso!', resp.message)
-      router.replace('/home')
+      router.replace('/home/active')
     } else
       toastWrapper.error('Erro ao criar meta', resp.message)
   }
 
   return (
-    <ScreenContainer>
+    <ScreenContainer scrollable>
       <FormProvider { ...methods }>
         <View
           style={{ 
             width: '100%', 
-            height: '100%',  
+            height: '80%',  
             justifyContent: 'space-evenly', 
             alignItems: 'center'
           }}

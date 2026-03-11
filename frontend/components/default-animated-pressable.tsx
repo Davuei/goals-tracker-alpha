@@ -109,7 +109,6 @@ const styles = StyleSheet.create({
   }, 
   defaultAnimatedPressableLongSquare: {
     width: '100%', 
-    padding: 2, 
 
     borderRadius: 8
   }, 

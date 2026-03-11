@@ -38,7 +38,7 @@ function RouteGuard() {
     if(!user && inInternalScreen)
       router.replace('/login')
     else if(user && !inInternalScreen)
-      router.replace('/home')
+      router.replace('/home/active')
   }, [user, isLoading, segments])
 
   if(isLoading) {

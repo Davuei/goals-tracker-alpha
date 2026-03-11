@@ -120,6 +120,58 @@ app.get('/users/goals',{ onRequest: [authenticateToken] } , async (req, res) => 
   }
 });
 
+app.get('/users/goals/active', { onRequest: [authenticateToken] }, async (req, res) => {
+  try {
+    const tokenUserId = req.user.sub;
+
+    const activeUserGoals = await prisma.goal.findMany({
+      where: {
+        userId: tokenUserId, 
+        endDate: {
+          gte: new Date()
+        }
+      }, 
+      orderBy: {
+        endDate: 'asc'
+      }
+    });
+
+    if(!activeUserGoals)
+      return res.status(204).send({ goals: [], message: 'Nenhuma meta ativa encontrada' });
+
+    return res.status(200).send({ goals: activeUserGoals, message: 'Metas ativas encontradas com sucesso!' });
+  } catch(error) {
+    console.error(error);
+    return res.status(500).send({ message: 'Erro ao buscar metas ativas. Tente novamente mais tarde.' })
+  }
+});
+
+app.get('/users/goals/expired', { onRequest: [authenticateToken] }, async (req, res) => {
+  try {
+    const tokenUserId = req.user.sub;
+
+    const expiredUserGoals = await prisma.goal.findMany({
+      where: {
+        userId: tokenUserId, 
+        endDate: {
+          lt: new Date()
+        }
+      }, 
+      orderBy: {
+        endDate: 'desc'
+      }
+    });
+
+    if(!expiredUserGoals)
+      return res.status(204).send({ goals: [], message: 'Nenhuma meta encerrada encontrada.' });
+
+    return res.status(200).send({ goals: expiredUserGoals, message: 'Metas encerradas encontradas com sucesso!' });
+  } catch(error) {
+    console.error(error); 
+    return res.status(500).send({ message: 'Erro ao buscar metas encerradas. Tente novamente mais tarde.' })
+  }
+});
+
 /*
 
   GOALS CONTROLLER

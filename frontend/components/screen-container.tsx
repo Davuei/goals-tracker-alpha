@@ -1,48 +1,72 @@
 import { colors } from "@/constants/colors";
-import { KeyboardAvoidingView, ScrollView, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { KeyboardAvoidingView, ScrollView, StyleSheet, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 interface ScreenContainerProps {
+  scrollable?: boolean, 
   children: React.ReactNode
 }
 
-export function ScreenContainer({ children }: ScreenContainerProps) {
-  const insets = useSafeAreaInsets()
+export function ScreenContainer({ scrollable = false, children }: ScreenContainerProps) {
+  if(scrollable) {
+    return (
+      <SafeAreaView style={ styles.safeArea }>
+        <KeyboardAvoidingView 
+          style={ styles.keyboardAvoidingView } 
+          behavior='padding'
+        >
+          <ScrollView
+            style={{
+              paddingHorizontal: 20, 
+              flex: 1, 
+            }}
+
+            contentContainerStyle={{ 
+              flexGrow: 1, 
+              justifyContent: 'center', 
+              alignItems: 'center' 
+            }}
+
+            keyboardShouldPersistTaps='handled'
+            keyboardDismissMode='on-drag'
+
+            showsVerticalScrollIndicator={ false }
+          >
+            { children }
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    )
+  }
 
   return (
-    <View 
-      style={{
-        flex: 1, 
-        backgroundColor: colors.backgroundDark 
-      }}
-    >
+    <SafeAreaView style={ styles.safeArea }>
       <KeyboardAvoidingView
-        style={{
-          flex: 1
-        }}
-
+        style={ styles.keyboardAvoidingView }
         behavior='padding'
       >
-        <ScrollView
+        <View
           style={{
             paddingHorizontal: 20, 
             flex: 1, 
-          }}
-
-          contentContainerStyle={{ 
-            flexGrow: 1, 
             justifyContent: 'center', 
-            alignItems: 'center' 
-          }}
-
-          keyboardShouldPersistTaps='handled'
-          keyboardDismissMode='on-drag'
-
-          showsVerticalScrollIndicator={ false }
+            alignItems: 'center'
+          }} 
         >
           { children }
-        </ScrollView>
+        </View>
       </KeyboardAvoidingView>
-    </View>
+    </SafeAreaView>
   )
 }
+
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1, 
+
+    backgroundColor: colors.backgroundDark
+  }, 
+  keyboardAvoidingView: {
+    flex: 1
+  }
+})
