@@ -1,6 +1,5 @@
 import { colors } from "@/constants/colors";
 import { KeyboardAvoidingView, ScrollView, StyleSheet, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 interface ScreenContainerProps {
   scrollable?: boolean, 
@@ -10,10 +9,10 @@ interface ScreenContainerProps {
 export function ScreenContainer({ scrollable = false, children }: ScreenContainerProps) {
   if(scrollable) {
     return (
-      <SafeAreaView style={ styles.safeArea }>
+      <View style={ styles.viewContainer }>
         <KeyboardAvoidingView 
           style={ styles.keyboardAvoidingView } 
-          behavior='padding'
+          behavior='height'
         >
           <ScrollView
             style={{
@@ -35,15 +34,15 @@ export function ScreenContainer({ scrollable = false, children }: ScreenContaine
             { children }
           </ScrollView>
         </KeyboardAvoidingView>
-      </SafeAreaView>
+      </View>
     )
   }
 
   return (
-    <SafeAreaView style={ styles.safeArea }>
+    <View style={ styles.viewContainer }>
       <KeyboardAvoidingView
         style={ styles.keyboardAvoidingView }
-        behavior='padding'
+        behavior='height'
       >
         <View
           style={{
@@ -56,12 +55,12 @@ export function ScreenContainer({ scrollable = false, children }: ScreenContaine
           { children }
         </View>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
+  viewContainer: {
     flex: 1, 
 
     backgroundColor: colors.backgroundDark

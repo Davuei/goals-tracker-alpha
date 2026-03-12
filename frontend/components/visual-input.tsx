@@ -34,7 +34,7 @@ export function VisualInput({ label, onPress, children, control, inputName, erro
       <Controller
         control={ control } 
         name={ inputName } 
-        rules={{ required: '* Data inválida' }}
+        rules={{ required: '* Data obrigatória' }} 
         render={() => (
           <Pressable 
             style={ styles.pressable }

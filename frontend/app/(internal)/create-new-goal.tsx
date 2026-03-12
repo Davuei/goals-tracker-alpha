@@ -26,7 +26,11 @@ export default function CreateNewGoal() {
 
   const handleSwitchCalendarModel = () => setShowCalendarModal((prevState) => !prevState)
 
-  const handleClearDates = () => setGoalDates({ startDate: '', endDate: '' })
+  const handleClearDates = () => {
+    setGoalDates({ startDate: '', endDate: '' })
+    methods.setValue('startDate', '', { shouldValidate: true })
+    methods.setValue('endDate', '', { shouldValidate: true })
+  }
 
   const handleCreateNewGoal: SubmitHandler<Goal> = async (data) => {
     const newGoal: NewGoal = {
@@ -67,13 +71,13 @@ export default function CreateNewGoal() {
           <View
             style={{
               width: '100%', 
-              gap: 16
+              gap: 20
             }}
           >
             <DefaultInput 
               label='Nome' 
-              keyboardType='default'
-              
+              keyboardType='default' 
+
               control={ methods.control } 
               inputName='title' 
               validateOpt={{ required: '* Nome obrigatório' }} 

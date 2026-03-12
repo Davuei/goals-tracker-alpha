@@ -37,6 +37,7 @@ export default function ActiveGoals() {
         style={{
           width: '100%', 
           height: '100%', 
+          paddingTop: 16, 
           gap: 16
         }}
       >
@@ -74,6 +75,8 @@ export default function ActiveGoals() {
                   paddingBottom: 40
                 }} 
                 ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
+
+                showsVerticalScrollIndicator={ false }
 
                 renderItem={({ item }) => (
                   <GoalComponent 

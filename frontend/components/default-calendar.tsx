@@ -89,7 +89,7 @@ export function DefaultCalendar({ dates, updateDates }: DefaultCalendarProps) {
         onDayPress={ handleDayPress }
 
         theme={{
-          todayTextColor: colors.backgroundLight, 
+          todayTextColor: colors.textPrimary, 
           todayBackgroundColor: colors.greenScales.green300, 
           arrowColor: colors.backgroundDark
         }}

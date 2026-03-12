@@ -64,15 +64,9 @@ export function DefaultInput({
             autoCorrect={ !isPasswordInput } 
             autoComplete='off' 
 
-            onFocus={(e) => {
-              setIsFocused(true)
-              props.onFocus?.(e)
-            }}
+            onFocus={ () => setIsFocused(true) }
 
-            onBlur={(e) => {
-              setIsFocused(false) 
-              props.onBlur?.(e)
-            }}
+            onBlur={() => setIsFocused(false) }
 
             onChangeText={ onChange } 
 
